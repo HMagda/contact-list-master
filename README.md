@@ -12,7 +12,7 @@ A React TypeScript application for browsing and managing contacts with full acce
 
 ### Loading & Error States
 - **Loading Spinner**: Animated spinner displays while fetching data from the API
-- **Error Handling with Retry**: The API has a 30% simulated failure rate to demonstrate error handling. When an error occurs:
+- **Error Handling with Retry**: The API has a 10% simulated failure rate to demonstrate error handling. When an error occurs:
   - An error message is displayed to the user
   - A **Retry** button appears allowing users to attempt the request again
   - This showcases a common UX pattern for handling network failures gracefully
