@@ -1,38 +1,335 @@
-.App {
-  text-align: center;
+:root {
+  --color-primary: #962d22;
+  --color-primary-dark: #6b1f18;
+  --color-primary-light: #c0392b;
+  --color-text: #333;
+  --color-text-muted: #595959;
+  --color-background: #fff;
+  --color-border: #767676;
+  --color-border-light: #ccc;
+  --color-avatar-bg: #f9f9f9;
+  --color-focus: #005fcc;
+
+  --shadow-card: 0 1px 2px 0 rgba(0, 0, 0, 0.15);
+  --shadow-card-hover: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 32px;
+
+  --radius-sm: 4px;
+  --radius-full: 50%;
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s ease;
+
+  --focus-ring: 0 0 0 3px var(--color-focus);
+  --focus-ring-offset: 0 0 0 2px var(--color-background);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--color-primary);
+  color: white;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.App {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+}
+
+.app-header {
+  margin-bottom: var(--spacing-lg);
+}
+
+.app-title {
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.selected-count {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.person-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin: 10px 0;
+  padding: var(--spacing-lg) var(--spacing-xl);
+  background: var(--color-background);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  cursor: pointer;
+  transition: box-shadow var(--transition-normal);
+}
+
+.person-info:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.person-info.selected {
+  box-shadow: 0 0 0 2px var(--color-primary), var(--shadow-card);
+}
+
+.person-info:focus {
+  outline: 3px solid transparent;
+  outline-offset: 2px;
+}
+
+.person-info:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: var(--shadow-card);
+}
+
+.person-info.selected:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-primary), var(--shadow-card);
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  margin-right: var(--spacing-lg);
+  background: var(--color-avatar-bg);
+  border: 2px solid var(--color-border-light);
+  border-radius: var(--radius-full);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.person-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  min-width: 0;
+  flex: 1;
+  overflow: visible;
+  padding: 4px;
+  margin: -4px;
+}
+
+.firstNameLastName {
+  display: block;
+  margin: 0 0 var(--spacing-xs) 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-text);
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+  border-radius: 2px;
+}
+
+.firstNameLastName:focus {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.jobTitle {
+  display: block;
+  margin: 0 0 var(--spacing-sm) 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+  border-radius: 2px;
+}
+
+.jobTitle:focus {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.emailAddress {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.emailAddress:hover {
+  text-decoration: underline;
+  color: var(--color-primary);
+}
+
+.emailAddress:focus {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.loader {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  width: 100%;
+  padding: 30px;
+  gap: var(--spacing-sm);
 }
 
-.App-link {
-  color: #61dafb;
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top-color: var(--color-primary);
+  border-radius: var(--radius-full);
+  animation: spin 1s linear infinite;
 }
 
-@keyframes App-logo-spin {
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+.error-container {
+  width: 100%;
+  padding: 30px;
+  text-align: center;
+}
+
+.error-message {
+  margin-bottom: var(--spacing-md);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-primary);
+}
+
+.retry-button,
+.load-more-button {
+  padding: 12px var(--spacing-xl);
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 16px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: background-color var(--transition-normal);
+}
+
+.retry-button:hover,
+.load-more-button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.retry-button:focus,
+.load-more-button:focus {
+  outline: 3px solid transparent;
+  outline-offset: 2px;
+}
+
+.retry-button:focus-visible,
+.load-more-button:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.load-more-button {
+  margin: var(--spacing-lg) 0;
+}
+
+@media (forced-colors: active) {
+  .person-info {
+    border: 2px solid CanvasText;
+  }
+
+  .person-info.selected {
+    border: 3px solid Highlight;
+  }
+
+  .person-info:focus-visible {
+    outline: 3px solid Highlight;
+  }
+
+  .avatar {
+    border: 2px solid CanvasText;
+  }
+
+  .retry-button,
+  .load-more-button {
+    border: 2px solid CanvasText;
+  }
+
+  .spinner {
+    border: 4px solid CanvasText;
+    border-top-color: Highlight;
   }
 }

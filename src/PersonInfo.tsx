@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 
 type Props = {
   data: {
@@ -6,30 +6,121 @@ type Props = {
     jobTitle: string;
     emailAddress: string;
   };
+  isSelected: boolean;
+  onToggle: () => void;
 };
 
-function PersonInfo(props: Props) {
-  const { data } = props;
+const useIsFirstRender = () => {
+  const isFirst = useRef(true);
+  useEffect(() => {
+    isFirst.current = false;
+  }, []);
+  return isFirst.current;
+};
+
+const getInitials = (name: string): string => {
+  return name
+    .split(" ")
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+};
+
+const PersonInfo = React.memo(function PersonInfo({
+  data,
+  isSelected,
+  onToggle,
+}: Props) {
+  const isFirstRender = useIsFirstRender();
+  const previousSelected = useRef(isSelected);
+  const [announcement, setAnnouncement] = React.useState("");
+
+  useEffect(() => {
+    if (!isFirstRender && previousSelected.current !== isSelected) {
+      setAnnouncement(
+        `${data.firstNameLastName} ${isSelected ? "selected" : "deselected"}`
+      );
+      const timer = setTimeout(() => setAnnouncement(""), 1000);
+      return () => clearTimeout(timer);
+    }
+    previousSelected.current = isSelected;
+  }, [isSelected, data.firstNameLastName, isFirstRender]);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        onToggle();
+      }
+    },
+    [onToggle]
+  );
+
+  const handleInnerKeyDown = useCallback((event: React.KeyboardEvent) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.stopPropagation();
+    }
+  }, []);
+
   return (
     <div
-      style={{
-        display: "flex",
-        height: "100px",
-        justifyContent: "center",
-        flexDirection: "column",
-        padding: "32px",
-        boxShadow: "0px 1px 2px 0px rgba(0, 0, 0, 0.15)",
-        margin: "10px 0",
-        background: "#fff",
-        cursor: "pointer",
-      }}
-      className="person-info"
+      role="option"
+      aria-selected={isSelected}
+      tabIndex={0}
+      onClick={onToggle}
+      onKeyDown={handleKeyDown}
+      className={`person-info ${isSelected ? "selected" : ""}`}
     >
-      <div className="firstNameLastName">{data.firstNameLastName}</div>
-      <div className="jobTitle">{data.jobTitle}</div>
-      <div className="emailAddress">{data.emailAddress}</div>
+      <span
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+        className="visually-hidden"
+      >
+        {announcement}
+      </span>
+
+      <div className="avatar" aria-hidden="true">
+        {getInitials(data.firstNameLastName)}
+      </div>
+      <div className="person-details">
+        <span
+          className="firstNameLastName"
+          tabIndex={0}
+          role="text"
+          aria-label={`Name: ${data.firstNameLastName}`}
+          title={data.firstNameLastName}
+          onKeyDown={handleInnerKeyDown}
+        >
+          {data.firstNameLastName}
+        </span>
+        <span
+          className="jobTitle"
+          tabIndex={0}
+          role="text"
+          aria-label={`Job title: ${data.jobTitle}`}
+          title={data.jobTitle}
+          onKeyDown={handleInnerKeyDown}
+        >
+          {data.jobTitle}
+        </span>
+        <a
+          href={`mailto:${data.emailAddress}`}
+          className="emailAddress"
+          onClick={(e) => e.stopPropagation()}
+          onKeyDown={handleInnerKeyDown}
+          title={data.emailAddress}
+          aria-label={`Email: ${data.emailAddress}`}
+        >
+          {data.emailAddress}
+        </a>
+      </div>
+      <span className="visually-hidden">
+        Press Enter or Space to {isSelected ? "deselect" : "select"}.
+      </span>
     </div>
   );
-}
+});
 
 export default PersonInfo;
