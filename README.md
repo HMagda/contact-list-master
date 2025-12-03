@@ -35,7 +35,7 @@ A React TypeScript application for browsing and managing contacts with full acce
 ## Tech Stack
 
 - React 19
-- TypeScript
+- TypeScript 5.9
 - CSS Custom Properties
 - Jest + React Testing Library
 
@@ -44,8 +44,8 @@ A React TypeScript application for browsing and managing contacts with full acce
 ### Prerequisites
 
 Make sure you have the following installed:
-- [Node.js](https://nodejs.org/) (v18 or higher recommended)
-- npm (comes with Node.js) or yarn
+- [Node.js](https://nodejs.org/) v18 or higher
+- npm v8.3 or higher (comes with Node.js 18+)
 
 ### Installation
 

@@ -88,7 +88,6 @@ const PersonInfo = React.memo(function PersonInfo({
         <span
           className="firstNameLastName"
           tabIndex={0}
-          role="text"
           aria-label={`Name: ${data.firstNameLastName}`}
           title={data.firstNameLastName}
           onKeyDown={handleInnerKeyDown}
@@ -98,7 +97,6 @@ const PersonInfo = React.memo(function PersonInfo({
         <span
           className="jobTitle"
           tabIndex={0}
-          role="text"
           aria-label={`Job title: ${data.jobTitle}`}
           title={data.jobTitle}
           onKeyDown={handleInnerKeyDown}
