@@ -1,73 +1,104 @@
-# TODO
+# Contact List
 
-Please do not fork the repo, clone it and put it in your own github / save it locally.
+A React TypeScript application for browsing and managing contacts with full accessibility support.
 
-Definition of done:
+## Features
 
-1. Fetch contacts using `apiData` function. Contacts are paginated (10 items in batch).
-2. "Load more" button is positioned at the bottom of the list. It fetches next batch and appends it to the existing list.
-3. Loading state is handled, display some kind of spinner / loader.
-4. Error state is handled. It allows to refetch failed batch.
-5. Each contact information card is selectable.
-6. Selected contacts have outline around them.
-7. Selected card can be deselected.
-8. Selected contacts are displayed at the top of the list.
-9. List performance is optimized when selecting/deselecting/scrolling cards.
+### Contact Management
+- **Paginated Loading**: Fetches contacts in batches of 10 with a "Load More" button
+- **Selection Management**: Click or use keyboard (Enter/Space) to select/deselect contacts
+- **Smart Sorting**: Selected contacts automatically appear at the top, ordered by selection time (most recently selected first)
+- **Selection Counter**: Live display of how many contacts are currently selected
 
-Doing this task in typescript is preferred. However, if you do not feel comfortable with typescript, please change file extension to js.
+### Loading & Error States
+- **Loading Spinner**: Animated spinner displays while fetching data from the API
+- **Error Handling with Retry**: The API has a 30% simulated failure rate to demonstrate error handling. When an error occurs:
+  - An error message is displayed to the user
+  - A **Retry** button appears allowing users to attempt the request again
+  - This showcases a common UX pattern for handling network failures gracefully
 
-We appreciate code that is written manually, so avoid including extra dependencies unless they are essential.
-Design choices are yours, but please stick to provided layout pattern. Please have UX in mind when making decisions.
+### Performance Optimizations
+- `React.memo` for preventing unnecessary re-renders
+- `useCallback` and `useMemo` hooks for memoization
+- `Set` data structure for O(1) selection lookups
 
-![layout.png](layout.png)
+## Accessibility (WCAG/ADA Compliant)
 
-Optional: Add functional / unit tests with testing library of your choice.
+- Skip link for keyboard navigation
+- Full keyboard support (Tab, Enter, Space)
+- ARIA labels and roles (listbox, option, status, alert)
+- Screen reader announcements for selection changes
+- Focus indicators (3px outline)
+- High contrast mode support
+- Reduced motion support
 
-Good luck and do not hesitate to ask in case of any questions!
+## Tech Stack
 
----
+- React 19
+- TypeScript
+- CSS Custom Properties
+- Jest + React Testing Library
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+- [Node.js](https://nodejs.org/) (v18 or higher recommended)
+- npm (comes with Node.js) or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd contact-list-master
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development server:
+   ```bash
+   npm start
+   ```
+
+4. Open your browser and navigate to [http://localhost:3000](http://localhost:3000)
+
+The app will automatically reload when you make changes to the source files.
 
 ## Available Scripts
 
-In the project directory, you can run:
+| Command | Description |
+|---------|-------------|
+| `npm start` | Run development server on port 3000 |
+| `npm test` | Run tests in watch mode |
+| `npm test -- --watchAll=false` | Run tests once (CI mode) |
+| `npm run build` | Build for production in `build/` folder |
 
-### `yarn start`
+## Project Structure
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```
+src/
+├── App.tsx          # Main component with state management
+├── App.css          # Styles with CSS custom properties
+├── App.test.tsx     # Unit tests
+├── PersonInfo.tsx   # Contact card component
+├── api.ts           # Mock API with 1s delay and 30% failure rate
+├── mockData.json    # Sample contact data
+├── index.tsx        # Entry point
+└── index.css        # Global styles
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## Error Feature Demo
 
-### `yarn test`
+The application intentionally includes a simulated 30% API failure rate (`src/api.ts`) to demonstrate proper error handling UX:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. Click "Load More" to fetch additional contacts
+2. If the request fails, you'll see an error message: "Something went wrong"
+3. Click the **Retry** button to attempt the request again
+4. The retry uses the same fetch logic, allowing users to recover from transient failures
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+This pattern is useful for real-world applications where network requests may occasionally fail.
