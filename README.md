@@ -86,7 +86,7 @@ src/
 ├── App.css          # Styles with CSS custom properties
 ├── App.test.tsx     # Unit tests
 ├── PersonInfo.tsx   # Contact card component
-├── api.ts           # Mock API with 1s delay and 30% failure rate
+├── api.ts           # Mock API with 1s delay and 10% failure rate
 ├── mockData.json    # Sample contact data
 ├── index.tsx        # Entry point
 └── index.css        # Global styles
@@ -94,7 +94,7 @@ src/
 
 ## Error Feature Demo
 
-The application intentionally includes a simulated 30% API failure rate (`src/api.ts`) to demonstrate proper error handling UX:
+The application intentionally includes a simulated 10% API failure rate (`src/api.ts`) to demonstrate proper error handling UX:
 
 1. Click "Load More" to fetch additional contacts
 2. If the request fails, you'll see an error message: "Something went wrong"
